@@ -1,8 +1,8 @@
 resource "aws_instance" "openvpn" {
-  ami           = var.AMIS[var.AWS_REGION]
-  instance_type = var.INSTANCE_TYPE
-  key_name      = var.key_name
-  subnet_id     = var.subnet_id
+  ami                    = var.AMIS[var.AWS_REGION]
+  instance_type         = var.INSTANCE_TYPE
+  key_name              = var.key_name
+  subnet_id             = var.subnet_id
   vpc_security_group_ids = var.vpc_security_group_ids
 
   root_block_device {
@@ -23,5 +23,5 @@ resource "aws_eip" "openvpn_eip" {
 
 resource "aws_eip_association" "openvpn_eip_assoc" {
   instance_id   = aws_instance.openvpn.id
-  allocation_id  = var.eip_allocation_id
+  allocation_id  = aws_eip.openvpn_eip.id  # Use the EIP created in this module
 }

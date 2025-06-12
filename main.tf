@@ -8,6 +8,7 @@ module "vpc" {
   availability_zone_1 = "eu-west-1a"
   subnet_cidrs = var.subnet_cidrs
 }
+
 module "security_group" {
   source = "./modules/security_group"
   vpc_id = module.vpc.openvpn_vpc_id
@@ -21,11 +22,5 @@ module "instance" {
   key_name = "EC2Acces"
   subnet_id = module.vpc.openvpn-public-1.id
   vpc_security_group_ids = [module.security_group.openvpn_sg.id]
-  eip_allocation_id = aws_eip.openvpn_eip.id
-}
-
-resource "aws_eip" "openvpn_eip" {
-  tags = {
-    Name = "OpenVpn Elastic IP"
-  }
+  # No need to pass eip_allocation_id since EIP is created inside module
 }

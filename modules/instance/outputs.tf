@@ -1,4 +1,4 @@
-output "openvpn_instance_id" {
+output "openvpn" {
   value = aws_instance.openvpn_instance.id
 }
 
