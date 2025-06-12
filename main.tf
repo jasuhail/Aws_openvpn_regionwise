@@ -6,6 +6,8 @@ module "vpc" {
   source = "./modules/vpc"
   cidr_block = "10.0.0.0/16"
   availability_zone_1 = "eu-west-1a"
+  availability_zone_2 = "eu-west-1b"
+  availability_zone_3 = "eu-west-1c"
   subnet_cidrs = var.subnet_cidrs
 }
 
