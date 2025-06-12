@@ -1,5 +1,5 @@
-output "openvpn" {
-  value = aws_instance.openvpn.id
+output "openvpn_instance_id" {
+  value = module.instance.openvpn
 }
 
 output "eip" {
