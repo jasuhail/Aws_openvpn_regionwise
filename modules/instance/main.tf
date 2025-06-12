@@ -15,6 +15,12 @@ resource "aws_instance" "openvpn" {
   }
 }
 
+resource "aws_eip" "openvpn_eip" {
+  tags = {
+    Name = "OpenVpn Elastic IP"
+  }
+}
+
 resource "aws_eip_association" "openvpn_eip_assoc" {
   instance_id   = aws_instance.openvpn.id
   allocation_id  = var.eip_allocation_id

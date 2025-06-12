@@ -25,7 +25,6 @@ module "instance" {
 }
 
 resource "aws_eip" "openvpn_eip" {
-  vpc = true
   tags = {
     Name = "OpenVpn Elastic IP"
   }
