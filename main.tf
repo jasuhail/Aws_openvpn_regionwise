@@ -6,12 +6,7 @@ module "vpc" {
   source = "./modules/vpc"
   cidr_block = "10.0.0.0/16"
   availability_zone_1 = "eu-west-1a"
-  subnet_cidrs = [
-    "10.0.1.0/24",  # Public subnet 1
-    "10.0.2.0/24",  # Public subnet 2
-    "10.0.3.0/24",  # Public subnet 3
-    "10.0.4.0/24"   # Private subnet
-  ]
+  subnet_cidrs = var.subnet_cidrs
 }
 module "security_group" {
   source = "./modules/security_group"
