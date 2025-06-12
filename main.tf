@@ -22,5 +22,5 @@ module "instance" {
   key_name = "EC2Acces"
   subnet_id = module.vpc.openvpn-public-1.id
   vpc_security_group_ids = [module.security_group.openvpn_sg.id]
-  # No need to pass eip_allocation_id since EIP is created inside module
+  # Removed: eip_allocation_id
 }

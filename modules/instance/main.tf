@@ -23,5 +23,5 @@ resource "aws_eip" "openvpn_eip" {
 
 resource "aws_eip_association" "openvpn_eip_assoc" {
   instance_id   = aws_instance.openvpn.id
-  allocation_id  = aws_eip.openvpn_eip.id  # Use the EIP created in this module
+  allocation_id = aws_eip.openvpn_eip.id  # Direct reference inside the module
 }
