@@ -1,6 +1,6 @@
 output "openvpn_instance_id" {
   description = "The ID of the OpenVPN instance"
-  value       = module.instance.openvpn
+  value       = module.instance.openvpn_instance_id
 }
 
 output "openvpn_eip" {
