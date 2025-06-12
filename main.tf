@@ -23,5 +23,5 @@ module "instance" {
   INSTANCE_TYPE = var.INSTANCE_TYPE
   key_name = "EC2Acces"
   subnet_id = module.vpc.openvpn_public_subnet_1_id  # Ensure this matches the output name
-  vpc_security_group_ids = [module.security_group.openvpn_sg.id]
+  vpc_security_group_ids = [module.security_group.openvpn_sg_id]
 }
