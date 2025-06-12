@@ -1,6 +1,6 @@
 output "openvpn_instance_id" {
   description = "The ID of the OpenVPN instance"
-  value       = module.instance.openvpn_instance_id
+  value       = module.instance.openvpn
 }
 
 output "openvpn_eip" {
@@ -16,4 +16,8 @@ output "vpc_id" {
 output "security_group_id" {
   description = "The ID of the OpenVPN security group"
   value       = module.security_group.openvpn_sg_id
+}
+
+output "openvpn_instance_id" {
+  value = module.instance.openvpn
 }
