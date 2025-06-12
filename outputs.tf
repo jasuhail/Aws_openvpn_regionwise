@@ -17,7 +17,3 @@ output "security_group_id" {
   description = "The ID of the OpenVPN security group"
   value       = module.security_group.openvpn_sg_id
 }
-
-output "openvpn_instance_id" {
-  value = module.instance.openvpn
-}
