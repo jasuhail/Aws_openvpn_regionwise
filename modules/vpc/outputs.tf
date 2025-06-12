@@ -13,3 +13,7 @@ output "openvpn_public_subnet_2_id" {
 output "openvpn_public_subnet_3_id" {
   value = aws_subnet.openvpn-public-3.id  # Add this if you have a third public subnet
 }
+
+output "main_private_subnet_1_id" {
+  value = aws_subnet.main-private-1.id
+}
