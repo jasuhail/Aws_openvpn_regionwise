@@ -1,6 +1,6 @@
 # VPC Module
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "./modules/vpc"
   
   vpc_cidr = var.vpc_cidr
   tags     = var.vpc_tags
@@ -8,7 +8,7 @@ module "vpc" {
 
 # Public Subnets
 module "public_subnet" {
-  source = "../../modules/subnet"
+  source = "./modules/subnet"
   
   vpc_id                  = module.vpc.vpc_id
   subnet_cidrs            = var.public_subnet_cidrs
@@ -19,7 +19,7 @@ module "public_subnet" {
 
 # Private Subnets
 module "private_subnet" {
-  source = "../../modules/subnet"
+  source = "./modules/subnet"
   
   vpc_id                  = module.vpc.vpc_id
   subnet_cidrs            = var.private_subnet_cidrs
@@ -30,7 +30,7 @@ module "private_subnet" {
 
 # Internet Gateway
 module "igw" {
-  source = "../../modules/internet-gateway"
+  source = "./modules/internet_gateway"
   
   vpc_id = module.vpc.vpc_id
   tags   = var.igw_tags
@@ -38,7 +38,7 @@ module "igw" {
 
 # Public Route Table
 module "public_route_table" {
-  source = "../../modules/route-table"
+  source = "./modules/route-table"
   
   vpc_id              = module.vpc.vpc_id
   internet_gateway_id = module.igw.internet_gateway_id
@@ -48,7 +48,7 @@ module "public_route_table" {
 
 # Private Route Table
 module "private_route_table" {
-  source = "../../modules/route-table"
+  source = "./modules/route-table"
   
   vpc_id              = module.vpc.vpc_id
   internet_gateway_id = null
@@ -58,7 +58,7 @@ module "private_route_table" {
 
 # Security Group
 module "security_group" {
-  source = "../../modules/security-group"
+  source = "./modules/security_group"
   
   vpc_id = module.vpc.vpc_id
   tags   = var.security_group_tags
@@ -66,7 +66,7 @@ module "security_group" {
 
 # EC2 Instance
 module "ec2" {
-  source = "../../modules/ec2"
+  source = "./modules/instance"
   
   openvpn_ami_id         = var.openvpn_ami_id
   instance_type          = var.instance_type
