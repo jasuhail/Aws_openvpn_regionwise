@@ -1,3 +1,14 @@
-output "openvpn_sg_id" {
-  value = aws_security_group.openvpn_sg.id  # Ensure this matches your security group resource name
+output "security_group_id" {
+  description = "ID of the security group"
+  value       = aws_security_group.sg_tf.id
+}
+
+output "security_group_name" {
+  description = "Name of the security group"
+  value       = aws_security_group.sg_tf.name
+}
+
+output "security_group_arn" {
+  description = "ARN of the security group"
+  value       = aws_security_group.sg_tf.arn
 }

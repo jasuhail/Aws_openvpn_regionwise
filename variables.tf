@@ -1,41 +1,125 @@
-variable "AWS_REGION" {
-  description = "The AWS region to deploy resources"
-  default     = "eu-west-1"
+# AWS Region
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
 }
 
-variable "INSTANCE_TYPE" {
-  description = "The instance type for the EC2 instance"
-  default     = "t2.micro"
+# Environment
+variable "environment" {
+  description = "Environment name (canada/ireland)"
+  type        = string
 }
 
-variable "AMIS" {
-  description = "Map of AMIs for different regions"
+# VPC
+variable "vpc_cidr" {
+  description = "CIDR block for VPC"
+  type        = string
+}
+
+variable "vpc_tags" {
+  description = "Tags for VPC"
   type        = map(string)
-  default = {
-    ap-south-1     = "ami-01614d815cf856337"
-    ap-south-2     = "ami-030c4c3f488a30239"
-    eu-west-1      = "ami-0f6f5a74e666160bb"
-    eu-central-1   = "ami-039470c0765f439c4"
-    eu-central-2   = "ami-0e5a8559984e19563"
-    us-west-2      = "ami-08e3ff0dfac458a93"
-    ap-southeast-1 = "ami-0c2639422d6fc7d69"
-    ap-southeast-2 = "ami-056303ef214800fec"
-  }
+  default     = {}
+}
+
+# Public Subnets
+variable "public_subnet_cidrs" {
+  description = "List of CIDR blocks for public subnets"
+  type        = list(string)
+}
+
+variable "public_subnet_tags" {
+  description = "Tags for public subnets"
+  type        = map(string)
+  default     = {}
+}
+
+# Private Subnets
+variable "private_subnet_cidrs" {
+  description = "List of CIDR blocks for private subnets"
+  type        = list(string)
+}
+
+variable "private_subnet_tags" {
+  description = "Tags for private subnets"
+  type        = map(string)
+  default     = {}
+}
+
+# Availability Zones
+variable "availability_zones" {
+  description = "List of availability zones"
+  type        = list(string)
+}
+
+# Internet Gateway
+variable "igw_tags" {
+  description = "Tags for Internet Gateway"
+  type        = map(string)
+  default     = {}
+}
+
+# Public Route Table
+variable "public_route_table_tags" {
+  description = "Tags for public route table"
+  type        = map(string)
+  default     = {}
+}
+
+# Private Route Table
+variable "private_route_table_tags" {
+  description = "Tags for private route table"
+  type        = map(string)
+  default     = {}
+}
+
+# Security Group
+variable "security_group_tags" {
+  description = "Tags for Security Group"
+  type        = map(string)
+  default     = {}
+}
+
+# EC2 Instance
+variable "openvpn_ami_id" {
+  description = "OpenVPN AMI ID for the region"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
 }
 
 variable "key_name" {
-  description = "The name of the key pair to use for the instance"
+  description = "Key pair name"
   type        = string
-  default     = "EC2Acces"
 }
 
-variable "subnet_cidrs" {
-  description = "List of CIDR blocks for the subnets"
-  type        = list(string)
-  default     = [
-    "10.0.1.0/24",  # Public subnet 1
-    "10.0.2.0/24",  # Public subnet 2
-    "10.0.3.0/24",  # Public subnet 3
-    "10.0.4.0/24"   # Private subnet
-  ]
+variable "enable_eip" {
+  description = "Create and associate Elastic IP"
+  type        = bool
+  default     = false
+}
+
+variable "root_volume_size" {
+  description = "Root volume size in GB"
+  type        = number
+}
+
+variable "root_volume_type" {
+  description = "Root volume type"
+  type        = string
+}
+
+variable "ec2_tags" {
+  description = "Tags for EC2 instance"
+  type        = map(string)
+  default     = {}
+}
+
+variable "user_data" {
+  description = "User data script"
+  type        = string
+  default     = null
 }

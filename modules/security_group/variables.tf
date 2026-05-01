@@ -1,3 +1,10 @@
 variable "vpc_id" {
-  type = string
+  description = "ID of the VPC"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags for the security group"
+  type        = map(string)
+  default     = {}
 }

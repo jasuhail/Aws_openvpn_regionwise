@@ -1,27 +1,81 @@
-provider "aws" {
-  region = var.AWS_REGION
-}
-
+# VPC Module
 module "vpc" {
   source = "./modules/vpc"
-  cidr_block = "10.0.0.0/16"
-  availability_zone_1 = "eu-west-1a"
-  availability_zone_2 = "eu-west-1b"
-  availability_zone_3 = "eu-west-1c"
-  subnet_cidrs = var.subnet_cidrs
+  
+  vpc_cidr = var.vpc_cidr
+  tags     = var.vpc_tags
 }
 
+# Public Subnets
+module "public_subnet" {
+  source = "./modules/subnet"
+  
+  vpc_id                  = module.vpc.vpc_id
+  subnet_cidrs            = var.public_subnet_cidrs
+  availability_zones      = var.availability_zones
+  map_public_ip_on_launch = true
+  tags                    = var.public_subnet_tags
+}
+
+# Private Subnets
+module "private_subnet" {
+  source = "./modules/subnet"
+  
+  vpc_id                  = module.vpc.vpc_id
+  subnet_cidrs            = var.private_subnet_cidrs
+  availability_zones      = var.availability_zones
+  map_public_ip_on_launch = false
+  tags                    = var.private_subnet_tags
+}
+
+# Internet Gateway
+module "igw" {
+  source = "./modules/internet-gateway"
+  
+  vpc_id = module.vpc.vpc_id
+  tags   = var.igw_tags
+}
+
+# Public Route Table
+module "public_route_table" {
+  source = "./modules/route-table"
+  
+  vpc_id              = module.vpc.vpc_id
+  internet_gateway_id = module.igw.internet_gateway_id
+  subnet_ids          = module.public_subnet.subnet_ids
+  tags                = var.public_route_table_tags
+}
+
+# Private Route Table
+module "private_route_table" {
+  source = "./modules/route-table"
+  
+  vpc_id              = module.vpc.vpc_id
+  internet_gateway_id = null
+  subnet_ids          = module.private_subnet.subnet_ids
+  tags                = var.private_route_table_tags
+}
+
+# Security Group
 module "security_group" {
-  source = "./modules/security_group"
-  vpc_id = module.vpc.openvpn_vpc_id
+  source = "./modules/security-group"
+  
+  vpc_id = module.vpc.vpc_id
+  tags   = var.security_group_tags
 }
 
-module "instance" {
-  source = "./modules/instance"
-  AMIS = var.AMIS
-  AWS_REGION = var.AWS_REGION
-  INSTANCE_TYPE = var.INSTANCE_TYPE
-  key_name = "EC2Acces"
-  subnet_id = module.vpc.openvpn_public_subnet_1_id  # Ensure this matches the output name
-  vpc_security_group_ids = [module.security_group.openvpn_sg_id]
+# EC2 Instance (in public subnet)
+module "ec2" {
+  source = "./modules/ec2"
+  
+  openvpn_ami_id         = var.openvpn_ami_id
+  instance_type          = var.instance_type
+  key_name               = var.key_name
+  subnet_id              = module.public_subnet.subnet_ids[0]
+  vpc_security_group_ids = [module.security_group.security_group_id]
+  enable_eip             = var.enable_eip
+  root_volume_size       = var.root_volume_size
+  root_volume_type       = var.root_volume_type
+  tags                   = var.ec2_tags
+  user_data              = var.user_data
 }
