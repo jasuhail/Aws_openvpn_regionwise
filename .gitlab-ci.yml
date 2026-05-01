@@ -4,7 +4,7 @@ stages:
   - destroy
 
 variables:
-  TF_VERSION: "1.15.0"
+  TF_VERSION: "1.11.4"
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
 
@@ -13,13 +13,9 @@ plan-canada:
   stage: plan
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Initializing Terraform for OpenVPN deployment in Canada..."
     - cd locations/canada
-    - terraform init
-    - terraform plan -out=tfplan
-  artifacts:
-    paths:
-      - locations/canada/tfplan
+    - terraform init -backend-config=backend.config
+    - terraform plan
   only:
     - canada
 
@@ -27,43 +23,32 @@ apply-canada:
   stage: apply
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Applying Terraform plan for OpenVPN in Canada..."
     - cd locations/canada
-    - terraform init
-    - terraform apply -auto-approve tfplan
+    - terraform init -backend-config=backend.config
+    - terraform apply -auto-approve
   when: manual
   only:
     - canada
-  environment:
-    name: canada
 
 destroy-canada:
   stage: destroy
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Destroying OpenVPN infrastructure in Canada..."
     - cd locations/canada
-    - terraform init
+    - terraform init -backend-config=backend.config
     - terraform destroy -auto-approve
   when: manual
   only:
     - canada
-  environment:
-    name: canada
-    action: stop
 
 # Ireland Pipeline
 plan-ireland:
   stage: plan
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Initializing Terraform for OpenVPN deployment in Ireland..."
     - cd locations/ireland
-    - terraform init
-    - terraform plan -out=tfplan
-  artifacts:
-    paths:
-      - locations/ireland/tfplan
+    - terraform init -backend-config=backend.config
+    - terraform plan
   only:
     - ireland
 
@@ -71,27 +56,20 @@ apply-ireland:
   stage: apply
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Applying Terraform plan for OpenVPN in Ireland..."
     - cd locations/ireland
-    - terraform init
-    - terraform apply -auto-approve tfplan
+    - terraform init -backend-config=backend.config
+    - terraform apply -auto-approve
   when: manual
   only:
     - ireland
-  environment:
-    name: ireland
 
 destroy-ireland:
   stage: destroy
   image: jas6992/gitlabpipeline:latest
   script:
-    - echo "Destroying OpenVPN infrastructure in Ireland..."
     - cd locations/ireland
-    - terraform init
+    - terraform init -backend-config=backend.config
     - terraform destroy -auto-approve
   when: manual
   only:
     - ireland
-  environment:
-    name: ireland
-    action: stop
