@@ -5,6 +5,9 @@ stages:
 
 variables:
   TF_VERSION: "1.15.0"
+  # AWS credentials will be passed from GitLab variables
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
 
 cache:
   paths:
@@ -14,6 +17,9 @@ cache:
 .plan_template: &plan_template
   stage: plan
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - echo "Checking AWS credentials..."
+    - aws sts get-caller-identity || echo "AWS credentials not configured"
   script:
     - cd locations/${LOCATION}
     - terraform init
@@ -26,6 +32,9 @@ cache:
 .apply_template: &apply_template
   stage: apply
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - echo "Applying to ${LOCATION}"
+    - aws sts get-caller-identity
   script:
     - cd locations/${LOCATION}
     - terraform init
@@ -35,6 +44,9 @@ cache:
 .destroy_template: &destroy_template
   stage: destroy
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - echo "Destroying ${LOCATION}"
+    - aws sts get-caller-identity
   script:
     - cd locations/${LOCATION}
     - terraform init
@@ -45,6 +57,8 @@ cache:
 canada-plan:
   stage: plan
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/canada
     - terraform init
@@ -59,6 +73,8 @@ canada-plan:
 canada-apply:
   stage: apply
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/canada
     - terraform init
@@ -75,6 +91,8 @@ canada-apply:
 canada-destroy:
   stage: destroy
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/canada
     - terraform init
@@ -91,6 +109,8 @@ canada-destroy:
 ireland-plan:
   stage: plan
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/ireland
     - terraform init
@@ -105,6 +125,8 @@ ireland-plan:
 ireland-apply:
   stage: apply
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/ireland
     - terraform init
@@ -121,6 +143,8 @@ ireland-apply:
 ireland-destroy:
   stage: destroy
   image: jas6992/gitlabpipeline:1.15.0
+  before_script:
+    - aws sts get-caller-identity
   script:
     - cd locations/ireland
     - terraform init
