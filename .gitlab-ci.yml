@@ -10,6 +10,7 @@ cache:
   paths:
     - .terraform
 
+# Templates
 .plan_template: &plan_template
   stage: plan
   image: jas6992/gitlabpipeline:1.15.0
@@ -30,8 +31,6 @@ cache:
     - terraform init
     - terraform apply -auto-approve tfplan
   when: manual
-  dependencies:
-    - ${LOCATION}-plan
 
 .destroy_template: &destroy_template
   stage: destroy
@@ -44,56 +43,92 @@ cache:
 
 # Canada Jobs
 canada-plan:
-  <<: *plan_template
-  variables:
-    LOCATION: canada
+  stage: plan
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/canada
+    - terraform init
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - locations/canada/tfplan
+    expire_in: 1 hour
   only:
     - canada
 
 canada-apply:
-  <<: *apply_template
-  variables:
-    LOCATION: canada
+  stage: apply
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/canada
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  when: manual
   only:
     - canada
   environment:
     name: canada
     url: https://ca-central-1.console.aws.amazon.com/ec2/v2/home?region=ca-central-1
+  needs:
+    - canada-plan
 
 canada-destroy:
-  <<: *destroy_template
-  variables:
-    LOCATION: canada
+  stage: destroy
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/canada
+    - terraform init
+    - terraform destroy -auto-approve
+  when: manual
   only:
     - canada
   environment:
     name: canada
     action: stop
+  needs: []
 
 # Ireland Jobs
 ireland-plan:
-  <<: *plan_template
-  variables:
-    LOCATION: ireland
+  stage: plan
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/ireland
+    - terraform init
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - locations/ireland/tfplan
+    expire_in: 1 hour
   only:
     - ireland
 
 ireland-apply:
-  <<: *apply_template
-  variables:
-    LOCATION: ireland
+  stage: apply
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/ireland
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  when: manual
   only:
     - ireland
   environment:
     name: ireland
     url: https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1
+  needs:
+    - ireland-plan
 
 ireland-destroy:
-  <<: *destroy_template
-  variables:
-    LOCATION: ireland
+  stage: destroy
+  image: jas6992/gitlabpipeline:1.15.0
+  script:
+    - cd locations/ireland
+    - terraform init
+    - terraform destroy -auto-approve
+  when: manual
   only:
     - ireland
   environment:
     name: ireland
     action: stop
+  needs: []
