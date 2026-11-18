@@ -19,3 +19,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_default_route" {
+  description = "Whether to create a default IPv4 route"
+  type        = bool
+  default     = false
+}
+
+variable "gateway_id" {
+  description = "Internet Gateway ID for the default route"
+  type        = string
+  default     = null
+}
