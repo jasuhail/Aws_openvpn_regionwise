@@ -43,7 +43,7 @@ module "public_route_table" {
   vpc_id               = module.vpc.vpc_id
   subnet_ids           = module.public_subnet.subnet_ids
   create_default_route = true
-  gateway_id           = module.igw.igw_id
+  gateway_id           = module.igw.internet_gateway_id
   tags                 = var.public_route_table_tags
 }
 
