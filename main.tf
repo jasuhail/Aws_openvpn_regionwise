@@ -40,22 +40,22 @@ module "igw" {
 module "public_route_table" {
   source = "./modules/route_table"
 
-  vpc_id              = module.vpc.vpc_id
-  internet_gateway_id = module.igw.internet_gateway_id
-  subnet_ids          = module.public_subnet.subnet_ids
-  tags                = var.public_route_table_tags
+  vpc_id               = module.vpc.vpc_id
+  subnet_ids           = module.public_subnet.subnet_ids
+  create_default_route = true
+  gateway_id           = module.igw.igw_id
+  tags                  = var.public_route_table_tags
 }
 
 # Private Route Table
 module "private_route_table" {
   source = "./modules/route_table"
 
-  vpc_id              = module.vpc.vpc_id
-  internet_gateway_id = null
-  subnet_ids          = module.private_subnet.subnet_ids
-  tags                = var.private_route_table_tags
+  vpc_id               = module.vpc.vpc_id
+  subnet_ids           = module.private_subnet.subnet_ids
+  create_default_route = false
+  tags                  = var.private_route_table_tags
 }
-
 # Security Group
 module "security_group" {
   source = "./modules/security_group"
