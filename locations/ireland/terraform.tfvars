@@ -1,6 +1,6 @@
 # AWS Region
-aws_region   = "eu-west-1"
-environment  = "ireland"
+aws_region  = "eu-west-1"
+environment = "ireland"
 
 # VPC
 vpc_cidr = "10.1.0.0/16"
@@ -57,7 +57,7 @@ security_group_tags = {
 }
 
 # EC2 Instance
-openvpn_ami_id   = "ami-05732c1f3b282f204"  # Openvpn AMI
+openvpn_ami_id   = "ami-05732c1f3b282f204" # Openvpn AMI
 instance_type    = "t3.small"
 key_name         = "Ec2"
 enable_eip       = true
