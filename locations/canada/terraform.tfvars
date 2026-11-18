@@ -1,6 +1,6 @@
 # AWS Region
-aws_region   = "ca-central-1"
-environment  = "canada"
+aws_region  = "ca-central-1"
+environment = "canada"
 
 # VPC
 vpc_cidr = "10.0.0.0/16"
@@ -57,7 +57,7 @@ security_group_tags = {
 }
 
 # EC2 Instance
-openvpn_ami_id   = "ami-09ddce3f60d168bec"   # Openvpn AM
+openvpn_ami_id   = "ami-09ddce3f60d168bec" # Openvpn AM
 instance_type    = "t3.small"
 key_name         = "Ec2-Canada"
 enable_eip       = true
