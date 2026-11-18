@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "jasland-state-files"
+    bucket         = "jas-tfstate-ir"
     key            = "openvpn-ireland/terraform.tfstate"
-    region         = "eu-north-1"
+    region         = "eu-west-1"
     encrypt        = true
     use_lockfile   = true
   }

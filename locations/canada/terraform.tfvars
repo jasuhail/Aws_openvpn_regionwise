@@ -57,9 +57,9 @@ security_group_tags = {
 }
 
 # EC2 Instance
-openvpn_ami_id   = "ami-033c06db15ec5c346"   # Openvpn AM
-instance_type    = "t3.micro"
-key_name         = "EC2Acces-canada"
+openvpn_ami_id   = "ami-09ddce3f60d168bec"   # Openvpn AM
+instance_type    = "t3.small"
+key_name         = "Ec2-Canada"
 enable_eip       = true
 root_volume_size = 8
 root_volume_type = "gp3"

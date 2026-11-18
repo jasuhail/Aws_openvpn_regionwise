@@ -38,7 +38,7 @@ module "igw" {
 
 # Public Route Table
 module "public_route_table" {
-  source = "./modules/route-table"
+  source = "./modules/route_table"
   
   vpc_id              = module.vpc.vpc_id
   internet_gateway_id = module.igw.internet_gateway_id
@@ -48,7 +48,7 @@ module "public_route_table" {
 
 # Private Route Table
 module "private_route_table" {
-  source = "./modules/route-table"
+  source = "./modules/route_table"
   
   vpc_id              = module.vpc.vpc_id
   internet_gateway_id = null
