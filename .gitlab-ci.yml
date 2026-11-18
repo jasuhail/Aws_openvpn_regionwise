@@ -7,6 +7,8 @@ default:
   image:
     name: hashicorp/terraform:1.17.2
     entrypoint: [""]
+  before_script:
+    - terraform version
 
 variables:
   TF_IN_AUTOMATION: "true"
@@ -20,16 +22,20 @@ plan-canada:
   stage: plan
   script:
     - echo "Planning OpenVPN deployment in Canada..."
-    - cd locations/canada
-    - terraform version
-    - terraform fmt -check
-    - terraform init -input=false
+    - terraform fmt -check -recursive
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/canada/backend.config"
     - terraform validate
-    - terraform plan -input=false -out=tfplan
+    - terraform plan
+        -input=false
+        -var-file="locations/canada/terraform.tfvars"
+        -out="canada.tfplan"
   artifacts:
     name: "canada-plan-$CI_COMMIT_SHORT_SHA"
     paths:
-      - locations/canada/tfplan
+      - canada.tfplan
     expire_in: 1 day
   rules:
     - if: '$CI_COMMIT_BRANCH == "canada"'
@@ -41,9 +47,14 @@ apply-canada:
       artifacts: true
   script:
     - echo "Applying OpenVPN deployment in Canada..."
-    - cd locations/canada
-    - terraform init -input=false
-    - terraform apply -input=false -auto-approve tfplan
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/canada/backend.config"
+    - terraform apply
+        -input=false
+        -auto-approve
+        canada.tfplan
   when: manual
   manual_confirmation: "Apply the Canada Terraform plan?"
   rules:
@@ -55,9 +66,14 @@ destroy-canada:
   stage: destroy
   script:
     - echo "Destroying OpenVPN infrastructure in Canada..."
-    - cd locations/canada
-    - terraform init -input=false
-    - terraform destroy -input=false -auto-approve
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/canada/backend.config"
+    - terraform destroy
+        -input=false
+        -auto-approve
+        -var-file="locations/canada/terraform.tfvars"
   when: manual
   manual_confirmation: "Permanently destroy the Canada infrastructure?"
   rules:
@@ -74,16 +90,20 @@ plan-ireland:
   stage: plan
   script:
     - echo "Planning OpenVPN deployment in Ireland..."
-    - cd locations/ireland
-    - terraform version
-    - terraform fmt -check
-    - terraform init -input=false
+    - terraform fmt -check -recursive
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/ireland/backend.config"
     - terraform validate
-    - terraform plan -input=false -out=tfplan
+    - terraform plan
+        -input=false
+        -var-file="locations/ireland/terraform.tfvars"
+        -out="ireland.tfplan"
   artifacts:
     name: "ireland-plan-$CI_COMMIT_SHORT_SHA"
     paths:
-      - locations/ireland/tfplan
+      - ireland.tfplan
     expire_in: 1 day
   rules:
     - if: '$CI_COMMIT_BRANCH == "ireland"'
@@ -95,9 +115,14 @@ apply-ireland:
       artifacts: true
   script:
     - echo "Applying OpenVPN deployment in Ireland..."
-    - cd locations/ireland
-    - terraform init -input=false
-    - terraform apply -input=false -auto-approve tfplan
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/ireland/backend.config"
+    - terraform apply
+        -input=false
+        -auto-approve
+        ireland.tfplan
   when: manual
   manual_confirmation: "Apply the Ireland Terraform plan?"
   rules:
@@ -109,9 +134,14 @@ destroy-ireland:
   stage: destroy
   script:
     - echo "Destroying OpenVPN infrastructure in Ireland..."
-    - cd locations/ireland
-    - terraform init -input=false
-    - terraform destroy -input=false -auto-approve
+    - terraform init
+        -input=false
+        -reconfigure
+        -backend-config="locations/ireland/backend.config"
+    - terraform destroy
+        -input=false
+        -auto-approve
+        -var-file="locations/ireland/terraform.tfvars"
   when: manual
   manual_confirmation: "Permanently destroy the Ireland infrastructure?"
   rules:
